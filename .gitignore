@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+build/
+dist/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+.env
+.env*.local
+.vercel/
+.vscode/
+.DS_Store
+*.log
+.claude/settings.local.json
+.agent-logs/.sync.lock
