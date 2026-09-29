@@ -44,6 +44,17 @@
     }
   },
   {
+    "key": "watch-rock",
+    "prompt": "Luxury steel wristwatch on black volcanic rock, water droplets, dramatic studio lighting, product photography",
+    "engine": "photo",
+    "aspect": "1:1",
+    "seed": 5505,
+    "motion": {
+      "preset": "orbit",
+      "duration": 5
+    }
+  },
+  {
     "key": "jungle-temple",
     "prompt": "Ancient stone temple ruins in a misty jungle, shafts of light through the canopy, explorers in the distance",
     "engine": "cinema",
@@ -60,5 +71,78 @@
     "engine": "photo",
     "aspect": "3:4",
     "seed": 7707
+  },
+  {
+    "key": "wizard-library",
+    "prompt": "Cozy wizard library with floating candles and towering bookshelves, painterly fantasy illustration",
+    "engine": "illustration",
+    "aspect": "1:1",
+    "seed": 8808,
+    "motion": {
+      "preset": "handheld",
+      "duration": 5
+    }
+  },
+  {
+    "key": "surfer-wave",
+    "prompt": "Surfer riding a giant turquoise wave, aerial view, spray and foam, bright sunlight",
+    "engine": "cinema",
+    "aspect": "9:16",
+    "seed": 9909,
+    "motion": {
+      "preset": "tilt-down",
+      "duration": 5
+    }
+  },
+  {
+    "key": "desert-car",
+    "prompt": "Red vintage sports car on an empty desert highway at dusk, long shadows, cinematic",
+    "engine": "cinema",
+    "aspect": "4:3",
+    "seed": 1212,
+    "motion": {
+      "preset": "crash-zoom",
+      "duration": 5
+    }
+  },
+  {
+    "key": "viking-fjord",
+    "prompt": "Viking longship sailing through a fjord in a storm, lightning, crashing waves, epic scene",
+    "engine": "cinema",
+    "aspect": "16:9",
+    "seed": 1313,
+    "motion": {
+      "preset": "earthquake",
+      "duration": 5
+    }
+  },
+  {
+    "key": "samurai-blossom",
+    "prompt": "Samurai standing in a field of cherry blossoms, petals in the wind, ink and watercolor style",
+    "engine": "illustration",
+    "aspect": "3:4",
+    "seed": 1414,
+    "motion": {
+      "preset": "bullet-time",
+      "duration": 5
+    }
+  },
+  {
+    "key": "coffee-still",
+    "prompt": "Overhead shot of a latte with heart latte art on a rustic wooden table, morning light, croissant",
+    "engine": "photo",
+    "aspect": "1:1",
+    "seed": 1515
+  },
+  {
+    "key": "lighthouse",
+    "prompt": "A lighthouse on a cliff at dusk, calm sea, pastel sky, film scene",
+    "engine": "cinema",
+    "aspect": "16:9",
+    "seed": 1616,
+    "motion": {
+      "preset": "vertigo",
+      "duration": 5
+    }
   }
 ]
