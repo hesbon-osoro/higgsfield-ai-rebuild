@@ -2,18 +2,32 @@ import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import * as schema from './schema';
 
-const globalForDb = globalThis as unknown as { pg?: ReturnType<typeof postgres> };
+type Db = ReturnType<typeof drizzle<typeof schema>>;
 
-function client() {
+const globalForDb = globalThis as unknown as { db?: Db };
+
+function connect(): Db {
   const url = process.env.DATABASE_URL;
   if (!url) throw new Error('DATABASE_URL is not set');
   // Serverless-friendly: small pool, and no prepared statements so it works
   // behind poolers such as Neon's or PgBouncer.
-  return postgres(url, { max: 5, prepare: false, idle_timeout: 20 });
+  const client = postgres(url, { max: 5, prepare: false, idle_timeout: 20 });
+  return drizzle(client, { schema });
 }
 
-const pg = globalForDb.pg ?? client();
-if (process.env.NODE_ENV !== 'production') globalForDb.pg = pg;
+function instance(): Db {
+  globalForDb.db ??= connect();
+  return globalForDb.db;
+}
 
-export const db = drizzle(pg, { schema });
+// Connects on first use rather than at import, so `next build` can load the
+// API routes without a database (e.g. preview deployments).
+export const db = new Proxy({} as Db, {
+  get(_target, prop) {
+    const inst = instance();
+    const value = Reflect.get(inst, prop);
+    return typeof value === 'function' ? value.bind(inst) : value;
+  },
+});
+
 export { schema };
