@@ -82,10 +82,12 @@ What should I work on for the 8x assignment? I can also look in `.agent-logs/` t
   blocked it, since a hook that pushes and merges to GitHub unattended is a fair thing to
   refuse. I dropped it. The hook only writes files now, and the logs get committed
   alongside the code in each feature PR.
-- **Hooks in the session that created them.** Claude Code snapshots hooks when a session
-  starts, so the session that wrote `.claude/settings.json` may not fire them itself.
-  That's why the canaries run in two new sessions. The setup session is still captured,
-  because every hook run rebuilds all of the repo's sessions from their transcripts.
+- **Hooks in the session that created them.** I expected Claude Code to snapshot hooks at
+  session start, so the session that wrote `.claude/settings.json` might not fire them.
+  That's why the canaries run in two new sessions. That guess was wrong: the hooks did
+  fire in the setup session too, which is how the task-notification bug below surfaced.
+  The setup session is also covered because every run rebuilds all of the repo's sessions
+  from their transcripts.
 - **Prompt model on the first turn.** When the prompt hook fires, the transcript doesn't
   yet say which model will answer. The prompt entry takes the model from the response
   once it exists, and until then falls back to the session's last known model.
