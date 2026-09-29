@@ -227,7 +227,12 @@ export async function refreshJobs(items: Generation[]): Promise<Generation[]> {
         } else {
           await db
             .update(schema.generations)
-            .set({ queuePosition: job.queuePosition, etaSec: job.waitSec, checkedAt: new Date() })
+            .set({
+              // 0 means a worker has picked it up; >0 is the place in line.
+              queuePosition: job.state === 'processing' ? 0 : Math.max(1, job.queuePosition ?? 1),
+              etaSec: job.waitSec,
+              checkedAt: new Date(),
+            })
             .where(eq(schema.generations.id, g.id));
         }
       } catch {
