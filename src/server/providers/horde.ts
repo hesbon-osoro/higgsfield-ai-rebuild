@@ -25,6 +25,14 @@ function headers() {
   };
 }
 
+// Largest size with the same aspect ratio, in multiples of 64, whose pixel
+// count stays under the budget (with a little headroom).
+function fitToBudget(width: number, height: number, budgetPx: number): [number, number] {
+  const k = Math.sqrt((budgetPx * 0.92) / (width * height));
+  const snap = (v: number) => Math.max(256, Math.floor((v * Math.min(1, k)) / 64) * 64);
+  return [snap(width), snap(height)];
+}
+
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 // Horde rate-limits per IP (e.g. "2 per 1 second"); back off and retry
@@ -47,27 +55,34 @@ export const horde: ImageProvider = {
 
   async submit({ prompt, engine, width, height, seed }) {
     const cfg = ENGINE_MODELS[engine];
-    const body = {
-      prompt: `${prompt} ### ${NEGATIVE}`,
-      models: cfg.models,
-      params: {
-        width,
-        height,
-        steps: cfg.steps,
-        cfg_scale: cfg.cfg,
-        sampler_name: 'k_euler_a',
-        seed: String(seed),
-        n: 1,
-        karras: true,
-      },
-      nsfw: false,
-      censor_nsfw: true,
-      r2: true,
-      shared: false,
-    };
-    const res = await call<{ id: string }>('/generate/async', { method: 'POST', body: JSON.stringify(body) });
-    if (!res.id) throw new Error('Image provider did not accept the job');
-    return { jobId: res.id };
+    let w = width;
+    let h = height;
+    let steps = cfg.steps;
+    for (let attempt = 0; ; attempt++) {
+      const body = {
+        prompt: `${prompt} ### ${NEGATIVE}`,
+        models: cfg.models,
+        params: { width: w, height: h, steps, cfg_scale: cfg.cfg, sampler_name: 'k_euler_a', seed: String(seed), n: 1, karras: true },
+        nsfw: false,
+        censor_nsfw: true,
+        r2: true,
+        shared: false,
+      };
+      try {
+        const res = await call<{ id: string }>('/generate/async', { method: 'POST', body: JSON.stringify(body) });
+        if (!res.id) throw new Error('Image provider did not accept the job');
+        return { jobId: res.id };
+      } catch (err) {
+        // Under load the free tier lowers its size budget ("requests over
+        // 576x576 … need kudos"). Shrink to fit, keeping the aspect ratio.
+        const budget = err instanceof Error ? /over (\d+)x(\d+)/.exec(err.message) : null;
+        if (!budget || attempt >= 3) throw err;
+        const [nw, nh] = fitToBudget(width, height, Number(budget[1]) * Number(budget[2]));
+        if (nw === w && nh === h) steps = Math.max(12, steps - 5);
+        w = nw;
+        h = nh;
+      }
+    }
   },
 
   async check(jobId): Promise<JobState> {
