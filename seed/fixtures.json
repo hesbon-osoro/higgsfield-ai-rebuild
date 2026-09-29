@@ -1,0 +1,64 @@
+[
+  {
+    "key": "paris-snow",
+    "prompt": "Portrait of a young woman in a red wool coat on a snowy Paris street, falling snow, bokeh lights",
+    "engine": "photo",
+    "aspect": "3:4",
+    "seed": 1101,
+    "motion": {
+      "preset": "dolly-in",
+      "duration": 5
+    }
+  },
+  {
+    "key": "astronaut-sunflowers",
+    "prompt": "A lone astronaut standing in a vast sunflower field at golden hour",
+    "engine": "cinema",
+    "aspect": "16:9",
+    "seed": 2202,
+    "motion": {
+      "preset": "push-tilt",
+      "duration": 5
+    }
+  },
+  {
+    "key": "ramen-rain",
+    "prompt": "Neon-lit ramen stall in the rain, Tokyo alley at night, steam rising, reflections on wet asphalt",
+    "engine": "cinema",
+    "aspect": "16:9",
+    "seed": 3303,
+    "motion": {
+      "preset": "pan-right",
+      "duration": 5
+    }
+  },
+  {
+    "key": "rooftop-anime",
+    "prompt": "Anime girl on a rooftop at sunset, wind in her hair, city skyline below, warm clouds",
+    "engine": "illustration",
+    "aspect": "3:4",
+    "seed": 4404,
+    "motion": {
+      "preset": "levitate",
+      "duration": 5
+    }
+  },
+  {
+    "key": "jungle-temple",
+    "prompt": "Ancient stone temple ruins in a misty jungle, shafts of light through the canopy, explorers in the distance",
+    "engine": "cinema",
+    "aspect": "16:9",
+    "seed": 6606,
+    "motion": {
+      "preset": "dolly-out",
+      "duration": 10
+    }
+  },
+  {
+    "key": "skater-lagos",
+    "prompt": "Street portrait of a young skateboarder in Lagos, vivid colorful clothes, afternoon sun, shallow depth of field",
+    "engine": "photo",
+    "aspect": "3:4",
+    "seed": 7707
+  }
+]

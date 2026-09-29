@@ -26,6 +26,7 @@ export function Studio() {
   const processing = items.filter((g) => g.status === 'PROCESSING').length;
   const applied = useRef<string | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const resultsRef = useRef<HTMLElement>(null);
 
   // Deep links from Library/Explore: /?from=<id>&mode=animate|remix
   const from = params.get('from');
@@ -49,6 +50,10 @@ export function Studio() {
   const submit = (input = c.toInput()) =>
     generate.mutate(input, {
       onSuccess: (res) => {
+        // On stacked (mobile) layouts the results are below the composer.
+        if (window.matchMedia('(max-width: 1023px)').matches) {
+          resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
         const failed = res.generations.filter((g) => g.status === 'FAILED');
         if (failed.length) toast(`${failed[0].error ?? 'Could not start'}. Credits refunded.`, 'error');
       },
@@ -81,7 +86,7 @@ export function Studio() {
         <ComposerPanel c={c} onSubmit={() => submit()} submitting={generate.isPending} />
       </aside>
 
-      <main className="min-w-0 flex-1 px-4 py-5 sm:px-6">
+      <main ref={resultsRef} className="min-w-0 flex-1 scroll-mt-14 px-4 py-5 sm:px-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
           <h1 className="text-lg font-semibold tracking-tight">Your generations</h1>
           <div className="flex items-center gap-3">

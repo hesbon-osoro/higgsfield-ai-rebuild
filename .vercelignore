@@ -1,0 +1,7 @@
+.env
+.env.*
+!.env.example
+.agent-logs
+.claude
+node_modules
+.next
