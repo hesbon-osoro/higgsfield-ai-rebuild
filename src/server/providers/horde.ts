@@ -25,11 +25,21 @@ function headers() {
   };
 }
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+// Horde rate-limits per IP (e.g. "2 per 1 second"); back off and retry
+// rather than failing the user's job.
 async function call<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(API + path, { ...init, headers: headers(), cache: 'no-store', signal: AbortSignal.timeout(20_000) });
-  const body = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(body?.message || `Image provider error ${res.status}`);
-  return body as T;
+  for (let attempt = 0; ; attempt++) {
+    const res = await fetch(API + path, { ...init, headers: headers(), cache: 'no-store', signal: AbortSignal.timeout(20_000) });
+    const body = await res.json().catch(() => ({}));
+    if (res.status === 429 && attempt < 5) {
+      await sleep(600 * (attempt + 1));
+      continue;
+    }
+    if (!res.ok) throw new Error(body?.message || `Image provider error ${res.status}`);
+    return body as T;
+  }
 }
 
 export const horde: ImageProvider = {

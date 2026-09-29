@@ -146,14 +146,20 @@ export function GenerationViewer({
           <section className="mt-auto flex flex-col gap-2">
             {g.kind === 'IMAGE' && (
               <button
-                onClick={() => actions.animate(g)}
+                onClick={() => {
+                  onClose();
+                  actions.animate(g);
+                }}
                 className="bg-accent text-accent-ink hover:bg-accent-hover flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold"
               >
                 <Clapperboard className="size-4" /> Animate this image
               </button>
             )}
             <button
-              onClick={() => actions.remix(g)}
+              onClick={() => {
+                onClose();
+                actions.remix(g);
+              }}
               className="border-line-strong hover:bg-hover flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium"
             >
               <Shuffle className="size-4" /> {g.isMine ? 'Remix: load this recipe' : 'Use this recipe'}

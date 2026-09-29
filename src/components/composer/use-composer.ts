@@ -98,7 +98,7 @@ export function useComposer() {
       ...prev,
       mode: g.kind,
       prompt: g.prompt,
-      engine: g.engineWasAuto ? 'auto' : g.engine,
+      engine: g.engineWasAuto || g.engine === 'frame' ? 'auto' : g.engine,
       aspect: g.aspect,
       count: g.kind === 'IMAGE' ? 1 : prev.count,
       preset: g.motionPreset ?? prev.preset,

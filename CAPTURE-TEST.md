@@ -89,3 +89,8 @@ What should I work on for the 8x assignment? I can also look in `.agent-logs/` t
 - **Prompt model on the first turn.** When the prompt hook fires, the transcript doesn't
   yet say which model will answer. The prompt entry takes the model from the response
   once it exists, and until then falls back to the session's last known model.
+- **Background-task notifications logged as prompts** (found mid-build). When a
+  background command finishes, Claude Code sends a `<task-notification>` through
+  `UserPromptSubmit`, and the first version logged it as `PROMPT num=2`. Those are harness
+  events, not human input. They never show up in the transcript as user messages, so the
+  next rebuild from the transcript dropped the entry anyway. The hook now ignores them.
