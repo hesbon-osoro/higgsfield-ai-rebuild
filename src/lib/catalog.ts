@@ -76,12 +76,12 @@ export function resolveAutoEngine(prompt: string, kind: Kind): EngineId {
 
 export type AspectId = '1:1' | '3:4' | '4:3' | '9:16' | '16:9';
 
-// Render sizes suit the SD 1.5-class checkpoints behind the demo provider
-// (multiples of 64, around 0.4 megapixels).
+// Render sizes suit the SD 1.5-class checkpoints behind the demo provider:
+// multiples of 64, and under the free tier's ~644×644 pixel budget.
 export const ASPECTS: { id: AspectId; width: number; height: number; label: string }[] = [
   { id: '1:1', width: 640, height: 640, label: 'Square' },
-  { id: '3:4', width: 576, height: 768, label: 'Portrait' },
-  { id: '4:3', width: 768, height: 576, label: 'Landscape' },
+  { id: '3:4', width: 512, height: 704, label: 'Portrait' },
+  { id: '4:3', width: 704, height: 512, label: 'Landscape' },
   { id: '9:16', width: 448, height: 768, label: 'Story' },
   { id: '16:9', width: 768, height: 448, label: 'Widescreen' },
 ];

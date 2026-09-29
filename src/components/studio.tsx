@@ -62,7 +62,7 @@ export function Studio() {
     submit({
       kind: g.kind,
       prompt: g.prompt,
-      engine: g.engineWasAuto ? null : g.engine,
+      engine: g.engineWasAuto || g.engine === 'frame' ? null : g.engine,
       aspect: g.aspect,
       count: 1,
       motionPreset: g.motionPreset,

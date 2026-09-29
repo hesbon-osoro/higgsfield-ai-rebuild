@@ -209,7 +209,10 @@ function main() {
     const { turns, lastModel } = parseSession(entries);
 
     // On UserPromptSubmit the new prompt is not in the transcript yet.
-    if (file === transcriptPath && input.hook_event_name === 'UserPromptSubmit' && typeof input.prompt === 'string') {
+    // Background-task notifications also arrive through UserPromptSubmit, but
+    // they are harness events, not something the human typed.
+    const isHumanPrompt = typeof input.prompt === 'string' && !/^\s*<task-notification>/.test(input.prompt);
+    if (file === transcriptPath && input.hook_event_name === 'UserPromptSubmit' && isHumanPrompt) {
       const lastTurn = turns[turns.length - 1];
       if (!lastTurn || lastTurn.prompt !== input.prompt) {
         turns.push({ prompt: input.prompt, promptTime: new Date().toISOString(), texts: [], responseTime: null, model: null });

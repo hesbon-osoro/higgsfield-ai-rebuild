@@ -97,7 +97,7 @@ export function MotionPlayer({
   };
 
   return (
-    <div ref={wrapRef} className={clsx('relative overflow-hidden bg-black', className)}>
+    <div ref={wrapRef} className={clsx('overflow-hidden bg-black', className ?? 'relative')}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         ref={imgRef}
@@ -127,7 +127,7 @@ export function MotionPlayer({
             aria-label="Scrub"
             className="accent-accent h-1 flex-1 cursor-pointer"
           />
-          <span className="w-16 shrink-0 text-right font-mono text-xs text-white/80 tabular-nums">
+          <span className="shrink-0 text-right font-mono text-xs whitespace-nowrap text-white/80 tabular-nums">
             {(progress * durationSec).toFixed(1)}s / {durationSec}s
           </span>
         </div>

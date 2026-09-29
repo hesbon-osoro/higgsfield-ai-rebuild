@@ -18,7 +18,7 @@ export interface Generation {
   kind: Kind;
   status: Status;
   prompt: string;
-  engine: EngineId;
+  engine: EngineId | 'frame';
   engineName: string;
   engineWasAuto: boolean;
   aspect: AspectId;

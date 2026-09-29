@@ -61,7 +61,7 @@ export function PresetGrid({
                 preset={p.id}
                 durationSec={3}
                 playWhen={active ? 'always' : 'hover'}
-                className="aspect-[4/3] w-full"
+                className="relative aspect-[4/3] w-full"
               />
               <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent px-2 pt-4 pb-1.5 text-[11px] font-medium">
                 {p.name}
@@ -70,7 +70,11 @@ export function PresetGrid({
           );
         })}
       </div>
-      {selected && <p className="text-faint mt-2 text-xs">{selected.description}</p>}
+      {selected && (
+        <p className="text-faint mt-2 text-xs">
+          <span className="text-fg">{selected.name}</span>: {selected.description}
+        </p>
+      )}
     </div>
   );
 }

@@ -184,7 +184,7 @@ export const schema = createSchema<Context>({
       topUp: async (_: unknown, { pack }: { pack: string }, ctx: Context) => viewerOf(await credits.topUp(ctx.viewer.id, pack)),
     },
     Generation: {
-      engineName: (g: Generation) => ENGINE_BY_ID[g.engine as EngineId]?.name ?? g.engine,
+      engineName: (g: Generation) => (g.engine === 'frame' ? 'Your frame' : (ENGINE_BY_ID[g.engine as EngineId]?.name ?? g.engine)),
       startFrame: (g: Generation, _: unknown, ctx: Context) => assetOf(ctx, g.startFrameAssetId),
       output: (g: Generation, _: unknown, ctx: Context) => assetOf(ctx, g.outputAssetId),
       published: (g: Generation) => Boolean(g.publishedAt),

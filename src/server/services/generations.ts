@@ -137,8 +137,9 @@ export async function createGenerations(user: User, raw: GenerateInput) {
           kind,
           status: instant ? ('SUCCEEDED' as const) : ('PROCESSING' as const),
           prompt: input.prompt,
-          engine,
-          engineWasAuto,
+          // No model runs for a video from an existing frame.
+          engine: instant ? 'frame' : engine,
+          engineWasAuto: instant ? false : engineWasAuto,
           aspect: input.aspect,
           seed: baseSeed + i,
           motionPreset: kind === 'VIDEO' ? input.motionPreset : null,
@@ -153,7 +154,10 @@ export async function createGenerations(user: User, raw: GenerateInput) {
       .returning();
   });
 
-  return Promise.all(rows.map((g) => (g.status === 'PROCESSING' ? submitJob(g) : g)));
+  // Sequential: the provider rate-limits bursts of submissions.
+  const out: Generation[] = [];
+  for (const g of rows) out.push(g.status === 'PROCESSING' ? await submitJob(g) : g);
+  return out;
 }
 
 function styledPrompt(prompt: string, engine: EngineId) {
