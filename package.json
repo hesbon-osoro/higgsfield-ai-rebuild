@@ -19,7 +19,7 @@
     "drizzle-orm": "^0.45.4",
     "graphql": "^17.1.0",
     "graphql-yoga": "^5.24.6",
-    "lucide-react": "^1.71.0",
+    "lucide-react": "^1.72.0",
     "next": "16.4.6",
     "postgres": "^3.4.9",
     "react": "19.3.1",
